@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer')
+const sgMail = require('@sendgrid/mail')
+const { StatusCodes } = require('http-status-codes')
 
-const sendEmail = async (req, res) => {
+const sendEmailEthereal = async (req, res) => {
   let testAccount = await nodemailer.createTestAccount()
   let transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -10,7 +12,6 @@ const sendEmail = async (req, res) => {
       pass: process.env.EMAIL_PASSWORD,
     },
   })
-
   let info = await transporter.sendMail({
     from: `Abhishek Singh <abhisheksinghxix@gmail.com>`,
     to: 'abhisingh78896@gmail.com',
@@ -18,6 +19,19 @@ const sendEmail = async (req, res) => {
     html: `<h2>Sending emails with nodejs</h2>`,
   })
   res.json({ info })
+}
+
+const sendEmail = async (req, res) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const msg = {
+    to: 'abhisingh78896@gmail.com',
+    from: 'abhisheksinghxix@gmail.com',
+    subject: 'Sending with sendgrid',
+    text: 'easy work',
+    html: '<strong>nodejs mail</strong>',
+  }
+  const info = await sgMail.send(msg)
+  res.status(StatusCodes.OK).json({ info })
 }
 
 module.exports = sendEmail
