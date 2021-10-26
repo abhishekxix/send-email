@@ -24,8 +24,8 @@ const sendEmailEthereal = async (req, res) => {
 const sendEmail = async (req, res) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
   const msg = {
-    to: 'abhisingh78896@gmail.com',
-    from: 'abhisheksinghxix@gmail.com',
+    to: process.env.TARGET,
+    from: process.env.SENDER,
     subject: 'Sending with sendgrid',
     text: 'easy work',
     html: '<strong>nodejs mail</strong>',
